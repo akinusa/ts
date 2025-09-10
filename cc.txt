@@ -1,0 +1,30 @@
+import java.io.*;
+import java.net.*;
+class ChatClient {
+    public static void main(String args[]) {
+        try {
+            Socket s = new Socket("localhost", 8000);
+            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String msg;
+            System.out.println("To stop chatting with server type STOP");
+            System.out.print("Client Says: ");
+            while ((msg = br.readLine()) != null) {
+                out.println(msg);  
+                if (msg.equalsIgnoreCase("STOP"))
+                    break;
+                System.out.println("Server Says: " + in.readLine());
+                System.out.print("Client Says: ");
+            }
+            // Close resources
+            br.close();
+            in.close();
+            out.close();
+            s.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
